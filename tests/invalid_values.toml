@@ -1,0 +1,6 @@
+package_name = "bad name!"
+repository = "ftp://example.com/repo"
+repository_mode = "remote"
+version = "v 1.0"
+ascii_tree = true
+max_depth = 0

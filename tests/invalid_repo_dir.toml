@@ -1,0 +1,6 @@
+package_name = "app"
+repository = "tests"
+repository_mode = "test"
+version = "1.0.0"
+ascii_tree = true
+max_depth = 3

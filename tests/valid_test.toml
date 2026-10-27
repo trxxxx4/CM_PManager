@@ -1,0 +1,6 @@
+package_name = "app"
+repository = "tests/test_repo.txt"
+repository_mode = "test"
+version = "2.0.0-beta.1"
+ascii_tree = false
+max_depth = 10
