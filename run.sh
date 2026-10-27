@@ -1,2 +1,3 @@
-#!/bin/bash
-go run ./src/main.go --config config.toml
+#!/bin/sh
+cd "$(dirname "$0")" || exit 1
+exec go run ./src --config config.toml "$@"

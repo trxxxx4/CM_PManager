@@ -1,0 +1,6 @@
+package_name = "openssl"
+repository = "tests/test_repo.txt"
+repository_mode = "test"
+version = "3.1.4-r5"
+ascii_tree = true
+max_depth = 3

@@ -7,15 +7,18 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"time"
 
 	"depgraph/src/config"
 )
 
 const (
 	defaultConfigPath = "config.toml"
+	requestTimeout    = 60 * time.Second
 	exitOK            = 0
 	exitConfigError   = 1
 	exitUsageError    = 2
+	exitDataError     = 3
 )
 
 // main runs the tool and exits with its status code.
@@ -41,7 +44,13 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return exitConfigError
 	}
 
-	cfg.Print(stdout)
+	pkg, err := findPackage(cfg)
+	if err != nil {
+		fmt.Fprintf(stderr, "error: %v\n", err)
+		return exitDataError
+	}
+
+	printDependencies(stdout, pkg)
 
 	return exitOK
 }

@@ -1,0 +1,6 @@
+package_name = "busybox"
+repository = "https://dl-cdn.alpinelinux.org/alpine/v3.19/main/no_such_arch"
+repository_mode = "remote"
+version = "1.0.0-r0"
+ascii_tree = true
+max_depth = 3

@@ -1,0 +1,6 @@
+package_name = "busybox"
+repository = "http://127.0.0.1:9/alpine/main/x86_64"
+repository_mode = "remote"
+version = "1.0.0-r0"
+ascii_tree = true
+max_depth = 3

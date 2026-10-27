@@ -1,4 +1,68 @@
-A: B C
-B: D
-C: D
-D:
+C:Q1Qm6Z0kXr4mP2nW8cVd1uT5yHs3a=
+P:curl
+V:8.5.0-r0
+A:x86_64
+S:96412
+I:274432
+T:URL retrival utility and library
+U:https://curl.se/
+L:MIT
+o:curl
+m:Natanael Copa <ncopa@alpinelinux.org>
+t:1700000000
+c:3f2a9c1d
+D:ca-certificates so:libc.musl-x86_64.so.1 so:libcares.so.2 so:libcurl.so.4
+p:cmd:curl=8.5.0-r0
+
+C:Q1Rk3Yd8Lm0pT6vB2nXw9aQ4eHs7c=
+P:curl
+V:8.4.0-r0
+A:x86_64
+S:95120
+I:270336
+T:URL retrival utility and library
+U:https://curl.se/
+L:MIT
+o:curl
+t:1690000000
+D:ca-certificates so:libc.musl-x86_64.so.1 so:libcurl.so.4
+p:cmd:curl=8.4.0-r0
+
+C:Q1Zp9Hs2Kd5qW8mT1vXb4nLc7eA0g=
+P:openssl
+V:3.1.4-r5
+A:x86_64
+S:6120
+I:4096
+T:Toolkit for Transport Layer Security and Cryptography
+U:https://www.openssl.org/
+L:Apache-2.0
+o:openssl
+t:1700000000
+D:ca-certificates-bundle libcrypto3=3.1.4-r5 libssl3>=3.1.4-r5 so:libc.musl-x86_64.so.1
+p:cmd:openssl=3.1.4-r5
+
+C:Q1Ab4Nc7Xd0mK3pW6vT9yLs2eHq5g=
+P:musl
+V:1.2.4_git20230717-r4
+A:x86_64
+S:402112
+I:667648
+T:the musl c library (libc) implementation
+U:https://musl.libc.org/
+L:MIT
+o:musl
+t:1690000000
+p:so:libc.musl-x86_64.so.1=1
+
+C:Q1Cd8Pe1Zf4nM7qX0wU3zNt6gJr9i=
+P:demo-conflicts
+V:1.0-r0
+A:x86_64
+S:1024
+I:2048
+T:Package that conflicts with another one
+o:demo-conflicts
+t:1700000000
+D:!demo-old libfoo>=1.0 libbar<2.0 pc:openssl~3.1 cmd:sh
+

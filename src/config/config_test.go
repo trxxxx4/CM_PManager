@@ -1,7 +1,6 @@
 package config
 
 import (
-	"bytes"
 	"os"
 	"path/filepath"
 	"strings"
@@ -29,25 +28,24 @@ func writeFile(t *testing.T, name, content string) string {
 	return path
 }
 
-// TestLoadValid checks that a correct file is loaded and printed.
+// TestLoadValid checks that a correct file is loaded into the struct.
 func TestLoadValid(t *testing.T) {
 	cfg, err := Load(writeFile(t, "config.toml", validConfig))
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	var out bytes.Buffer
-	cfg.Print(&out)
+	want := Config{
+		PackageName:    "left-pad",
+		Repository:     "https://registry.npmjs.org",
+		RepositoryMode: ModeRemote,
+		Version:        "1.3.0",
+		ASCIITree:      true,
+		MaxDepth:       3,
+	}
 
-	want := "package_name: left-pad\n" +
-		"repository: https://registry.npmjs.org\n" +
-		"repository_mode: remote\n" +
-		"version: 1.3.0\n" +
-		"ascii_tree: true\n" +
-		"max_depth: 3\n"
-
-	if out.String() != want {
-		t.Errorf("got:\n%s\nwant:\n%s", out.String(), want)
+	if *cfg != want {
+		t.Errorf("got %+v, want %+v", *cfg, want)
 	}
 }
 

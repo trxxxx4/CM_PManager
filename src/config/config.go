@@ -4,7 +4,6 @@ package config
 import (
 	"errors"
 	"fmt"
-	"io"
 	"io/fs"
 
 	"github.com/BurntSushi/toml"
@@ -72,16 +71,6 @@ func (c *Config) Validate() error {
 	}
 
 	return nil
-}
-
-// Print writes all parameters to w as key-value pairs.
-func (c *Config) Print(w io.Writer) {
-	fmt.Fprintf(w, "%s: %s\n", keyPackageName, c.PackageName)
-	fmt.Fprintf(w, "%s: %s\n", keyRepository, c.Repository)
-	fmt.Fprintf(w, "%s: %s\n", keyRepositoryMode, c.RepositoryMode)
-	fmt.Fprintf(w, "%s: %s\n", keyVersion, c.Version)
-	fmt.Fprintf(w, "%s: %t\n", keyASCIITree, c.ASCIITree)
-	fmt.Fprintf(w, "%s: %d\n", keyMaxDepth, c.MaxDepth)
 }
 
 // readError turns a file or TOML decoding error into a readable one.
