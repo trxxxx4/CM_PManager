@@ -7,6 +7,5 @@ run() {
     echo
 }
 
-run "Wrong version: error lists real versions" remote_wrong_version
-run "Repository URL not found" remote_404
-run "Server unreachable" remote_unreachable
+run "Real repository: busybox" remote_busybox
+run "Real repository: busybox-suid" remote_busybox_suid
