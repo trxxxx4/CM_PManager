@@ -9,7 +9,9 @@ import (
 	"os"
 	"time"
 
+	"depgraph/src/apk"
 	"depgraph/src/config"
+	"depgraph/src/graph"
 )
 
 const (
@@ -44,14 +46,27 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return exitConfigError
 	}
 
-	pkg, err := findPackage(cfg)
+	return execute(cfg, stdout, stderr)
+}
+
+// execute loads package data, builds the graph and prints the result.
+func execute(cfg *config.Config, stdout, stderr io.Writer) int {
+	packages, err := loadPackages(cfg)
 	if err != nil {
 		fmt.Fprintf(stderr, "error: %v\n", err)
 		return exitDataError
 	}
-
-	printDependencies(stdout, pkg)
-
+	pkg, err := apk.FindPackage(packages, cfg.PackageName, cfg.Version)
+	if err != nil {
+		fmt.Fprintf(stderr, "error: %v\n", err)
+		return exitDataError
+	}
+	result, err := graph.Build(packages, pkg.Name, cfg.MaxDepth)
+	if err != nil {
+		fmt.Fprintf(stderr, "error: %v\n", err)
+		return exitDataError
+	}
+	printGraph(stdout, result)
 	return exitOK
 }
 

@@ -51,15 +51,20 @@ func TestRunPrintsDependencies(t *testing.T) {
 	}{
 		{
 			"curl", "8.5.0-r0",
-			"Package: curl 8.5.0-r0\n" +
-				"Direct dependencies (3):\n" +
+			"Dependency graph: curl\n" +
+				"Packages (4):\n" +
 				"  ca-certificates\n" +
+				"  curl\n" +
+				"  libcurl\n" +
 				"  so:libc.musl-x86_64.so.1\n" +
-				"  libcurl>=8.5.0\n",
+				"Dependencies (3):\n" +
+				"  curl -> ca-certificates\n" +
+				"  curl -> libcurl\n" +
+				"  curl -> so:libc.musl-x86_64.so.1\n",
 		},
 		{
 			"musl", "1.2.4-r4",
-			"Package: musl 1.2.4-r4\nDirect dependencies: none\n",
+			"Dependency graph: musl\nPackages (1):\n  musl\nDependencies (0):\n  none\n",
 		},
 	}
 

@@ -4,23 +4,22 @@ import (
 	"fmt"
 	"io"
 
-	"depgraph/src/apk"
+	"depgraph/src/graph"
 )
 
-// printDependencies writes the direct dependencies of the package.
-func printDependencies(w io.Writer, pkg *apk.Package) {
-	deps := pkg.DirectDependencies()
-
-	fmt.Fprintf(w, "Package: %s %s\n", pkg.Name, pkg.Version)
-
-	if len(deps) == 0 {
-		fmt.Fprintln(w, "Direct dependencies: none")
+// printGraph writes the nodes and directed edges of the dependency graph.
+func printGraph(w io.Writer, result *graph.Graph) {
+	fmt.Fprintf(w, "Dependency graph: %s\n", result.Root)
+	fmt.Fprintf(w, "Packages (%d):\n", len(result.Nodes))
+	for _, name := range result.Nodes {
+		fmt.Fprintf(w, "  %s\n", name)
+	}
+	fmt.Fprintf(w, "Dependencies (%d):\n", len(result.Edges))
+	if len(result.Edges) == 0 {
+		fmt.Fprintln(w, "  none")
 		return
 	}
-
-	fmt.Fprintf(w, "Direct dependencies (%d):\n", len(deps))
-
-	for _, dep := range deps {
-		fmt.Fprintf(w, "  %s\n", dep)
+	for _, edge := range result.Edges {
+		fmt.Fprintf(w, "  %s -> %s\n", edge.From, edge.To)
 	}
 }

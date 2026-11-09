@@ -20,7 +20,7 @@ func findPackage(cfg *config.Config) (*apk.Package, error) {
 // loadPackages reads the index from the file or from the URL.
 func loadPackages(cfg *config.Config) ([]apk.Package, error) {
 	if cfg.RepositoryMode == config.ModeTest {
-		return apk.LoadFile(cfg.Repository)
+		return apk.LoadTestRepository(cfg.Repository, cfg.Version)
 	}
 
 	client := &http.Client{Timeout: requestTimeout}

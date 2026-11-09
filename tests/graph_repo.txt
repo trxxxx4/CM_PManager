@@ -1,0 +1,7 @@
+# Test repository for DFS traversal.
+A: B C
+B: D
+C: D E
+D: A
+E:
+F:
