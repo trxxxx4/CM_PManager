@@ -10,3 +10,8 @@ ENV/
 # IDE and editors
 .vscode/
 .idea/
+# Generated dependency graph artifacts
+dependency_graph_*.dot
+dependency_graph_*.png
+reverse_dependency_graph_*.dot
+reverse_dependency_graph_*.png

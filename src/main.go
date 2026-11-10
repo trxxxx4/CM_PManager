@@ -12,6 +12,7 @@ import (
 	"depgraph/src/apk"
 	"depgraph/src/config"
 	"depgraph/src/graph"
+	"depgraph/src/visualize"
 )
 
 const (
@@ -67,7 +68,32 @@ func execute(cfg *config.Config, reverse bool, stdout, stderr io.Writer) int {
 		return exitDataError
 	}
 	printGraph(stdout, result, reverse)
+	dotPath, imagePath := visualize.FileNames(result.Root, reverse)
+	if err := visualize.GenerateFiles(
+		dotPath,
+		imagePath,
+		visualize.ToDOT(result, reverse),
+	); err != nil {
+		fmt.Fprintf(stderr, "error: %v\n", err)
+		return exitDataError
+	}
+	fmt.Fprintf(stdout, "Graphviz DOT: %s\nGraph image: %s\n", dotPath, imagePath)
+	if cfg.ASCIITree {
+		visualize.WriteASCIITree(stdout, result, reverse)
+	}
+	openGeneratedImage(imagePath, stdout, stderr)
 	return exitOK
+}
+
+// openGeneratedImage opens the PNG when a desktop session is available.
+func openGeneratedImage(path string, stdout, stderr io.Writer) {
+	if os.Getenv("DEPGRAPH_NO_OPEN") == "1" || !visualize.HasDesktop() {
+		fmt.Fprintf(stdout, "Image saved; graphical display is unavailable: %s\n", path)
+		return
+	}
+	if err := visualize.OpenImage(path); err != nil {
+		fmt.Fprintf(stderr, "warning: %v\n", err)
+	}
 }
 
 // parseArgs reads the command line and returns the config file path.
