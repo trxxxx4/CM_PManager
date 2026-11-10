@@ -111,3 +111,15 @@ func TestRunErrors(t *testing.T) {
 		}
 	}
 }
+
+// TestRunReverse checks CLI output for direct reverse dependencies.
+func TestRunReverse(t *testing.T) {
+	var stdout, stderr bytes.Buffer
+	code := run([]string{"--config", "../tests/reverse_depth.toml", "--reverse"}, &stdout, &stderr)
+	want := "Reverse dependency graph: D\nPackages (3):\n" +
+		"  B\n  C\n  D\nReverse dependencies (2):\n" +
+		"  D <- B\n  D <- C\n"
+	if code != exitOK || stdout.String() != want {
+		t.Fatalf("code %d, output %q, stderr %q", code, stdout.String(), stderr.String())
+	}
+}

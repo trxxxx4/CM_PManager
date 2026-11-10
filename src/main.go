@@ -30,7 +30,7 @@ func main() {
 
 // run executes the tool and returns the process exit code.
 func run(args []string, stdout, stderr io.Writer) int {
-	path, err := parseArgs(args, stderr)
+	path, reverse, err := parseArgs(args, stderr)
 	if errors.Is(err, flag.ErrHelp) {
 		return exitOK
 	}
@@ -46,11 +46,11 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return exitConfigError
 	}
 
-	return execute(cfg, stdout, stderr)
+	return execute(cfg, reverse, stdout, stderr)
 }
 
 // execute loads package data, builds the graph and prints the result.
-func execute(cfg *config.Config, stdout, stderr io.Writer) int {
+func execute(cfg *config.Config, reverse bool, stdout, stderr io.Writer) int {
 	packages, err := loadPackages(cfg)
 	if err != nil {
 		fmt.Fprintf(stderr, "error: %v\n", err)
@@ -61,17 +61,17 @@ func execute(cfg *config.Config, stdout, stderr io.Writer) int {
 		fmt.Fprintf(stderr, "error: %v\n", err)
 		return exitDataError
 	}
-	result, err := graph.Build(packages, pkg.Name, cfg.MaxDepth)
+	result, err := buildGraph(packages, pkg.Name, cfg.MaxDepth, reverse)
 	if err != nil {
 		fmt.Fprintf(stderr, "error: %v\n", err)
 		return exitDataError
 	}
-	printGraph(stdout, result)
+	printGraph(stdout, result, reverse)
 	return exitOK
 }
 
 // parseArgs reads the command line and returns the config file path.
-func parseArgs(args []string, output io.Writer) (string, error) {
+func parseArgs(args []string, output io.Writer) (string, bool, error) {
 	flags := flag.NewFlagSet("depgraph", flag.ContinueOnError)
 	flags.SetOutput(output)
 	path := flags.String(
@@ -80,13 +80,22 @@ func parseArgs(args []string, output io.Writer) (string, error) {
 		"path to the TOML configuration file",
 	)
 
+	reverse := flags.Bool("reverse", false, "show reverse dependencies")
 	if err := flags.Parse(args); err != nil {
-		return "", err
+		return "", false, err
 	}
 
 	if flags.NArg() > 0 {
-		return "", fmt.Errorf("unexpected arguments: %v", flags.Args())
+		return "", false, fmt.Errorf("unexpected arguments: %v", flags.Args())
 	}
 
-	return *path, nil
+	return *path, *reverse, nil
+}
+
+// buildGraph selects the traversal direction without changing stage 3 DFS.
+func buildGraph(packages []apk.Package, name string, depth int, reverse bool) (*graph.Graph, error) {
+	if reverse {
+		return graph.BuildReverse(packages, name, depth)
+	}
+	return graph.Build(packages, name, depth)
 }
