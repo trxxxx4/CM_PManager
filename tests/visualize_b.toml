@@ -1,4 +1,4 @@
-package_name = "B
+package_name = "B"
 repository = "tests/graph_repo.txt"
 repository_mode = "test"
 version = "1.0"
