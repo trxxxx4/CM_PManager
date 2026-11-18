@@ -15,10 +15,10 @@ func WriteASCIITree(output io.Writer, result *graph.Graph, reverse bool) {
 	if reverse {
 		title = "Reverse dependency tree"
 	}
-	fmt.Fprintf(output, "%s:\n%s\n", title, result.Root)
+	fmt.Fprintf(output, "%s:\n%s\n", title, result.Label(result.Root))
 	active := map[string]bool{result.Root: true}
 	visited := map[string]bool{result.Root: true}
-	writeChildren(output, result.Root, "", children, active, visited)
+	writeChildren(output, result, result.Root, "", children, active, visited)
 }
 
 // adjacency groups graph edges by their source vertex.
@@ -36,6 +36,7 @@ func adjacency(edges []graph.Edge) map[string][]string {
 // writeChildren prints one tree level and marks repeated or cyclic vertices.
 func writeChildren(
 	output io.Writer,
+	result *graph.Graph,
 	parent, prefix string,
 	children map[string][]string,
 	active, visited map[string]bool,
@@ -44,7 +45,7 @@ func writeChildren(
 	for index, child := range items {
 		last := index == len(items)-1
 		branch, childPrefix := treeBranch(last, prefix)
-		writeChild(output, child, prefix+branch, childPrefix, children, active, visited)
+		writeChild(output, result, child, prefix+branch, childPrefix, children, active, visited)
 	}
 }
 
@@ -59,11 +60,12 @@ func treeBranch(last bool, prefix string) (string, string) {
 // writeChild prints a vertex and recursively expands it when possible.
 func writeChild(
 	output io.Writer,
+	result *graph.Graph,
 	name, line, childPrefix string,
 	children map[string][]string,
 	active, visited map[string]bool,
 ) {
-	fmt.Fprint(output, line, name)
+	fmt.Fprint(output, line, result.Label(name))
 	if active[name] {
 		fmt.Fprintln(output, " [cycle]")
 		return
@@ -74,6 +76,6 @@ func writeChild(
 	}
 	fmt.Fprintln(output)
 	active[name], visited[name] = true, true
-	writeChildren(output, name, childPrefix, children, active, visited)
+	writeChildren(output, result, name, childPrefix, children, active, visited)
 	delete(active, name)
 }

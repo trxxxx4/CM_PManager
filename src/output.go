@@ -16,7 +16,7 @@ func printGraph(w io.Writer, result *graph.Graph, reverse bool) {
 	fmt.Fprintf(w, "Dependency graph: %s\n", result.Root)
 	fmt.Fprintf(w, "Packages (%d):\n", len(result.Nodes))
 	for _, name := range result.Nodes {
-		fmt.Fprintf(w, "  %s\n", name)
+		fmt.Fprintf(w, "  %s\n", result.Label(name))
 	}
 	fmt.Fprintf(w, "Dependencies (%d):\n", len(result.Edges))
 	if len(result.Edges) == 0 {
@@ -24,7 +24,7 @@ func printGraph(w io.Writer, result *graph.Graph, reverse bool) {
 		return
 	}
 	for _, edge := range result.Edges {
-		fmt.Fprintf(w, "  %s -> %s\n", edge.From, edge.To)
+		fmt.Fprintf(w, "  %s -> %s\n", result.Label(edge.From), result.Label(edge.To))
 	}
 }
 
@@ -33,13 +33,13 @@ func printReverseGraph(w io.Writer, result *graph.Graph) {
 	fmt.Fprintf(w, "Reverse dependency graph: %s\n", result.Root)
 	fmt.Fprintf(w, "Packages (%d):\n", len(result.Nodes))
 	for _, name := range result.Nodes {
-		fmt.Fprintf(w, "  %s\n", name)
+		fmt.Fprintf(w, "  %s\n", result.Label(name))
 	}
 	fmt.Fprintf(w, "Reverse dependencies (%d):\n", len(result.Edges))
 	if len(result.Edges) == 0 {
 		fmt.Fprintln(w, "  none")
 	}
 	for _, edge := range result.Edges {
-		fmt.Fprintf(w, "  %s <- %s\n", edge.From, edge.To)
+		fmt.Fprintf(w, "  %s <- %s\n", result.Label(edge.From), result.Label(edge.To))
 	}
 }

@@ -13,7 +13,7 @@ import (
 func ToDOT(result *graph.Graph, reverse bool) string {
 	var output strings.Builder
 	writeGraphHeader(&output, result.Root, reverse)
-	writeNodes(&output, result.Nodes)
+	writeNodes(&output, result)
 	writeEdges(&output, result.Edges)
 	output.WriteString("}\n")
 	return output.String()
@@ -31,10 +31,14 @@ func writeGraphHeader(output *strings.Builder, root string, reverse bool) {
 }
 
 // writeNodes writes every graph vertex with a safe quoted identifier.
-func writeNodes(output *strings.Builder, nodes []string) {
-	for _, name := range nodes {
-		quoted := strconv.Quote(name)
-		fmt.Fprintf(output, "  %s [label=%s];\n", quoted, quoted)
+func writeNodes(output *strings.Builder, result *graph.Graph) {
+	for _, name := range result.Nodes {
+		fmt.Fprintf(
+			output,
+			"  %s [label=%s];\n",
+			strconv.Quote(name),
+			strconv.Quote(result.Label(name)),
+		)
 	}
 }
 

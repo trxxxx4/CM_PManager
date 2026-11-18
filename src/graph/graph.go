@@ -16,9 +16,19 @@ type Edge struct {
 
 // Graph contains all packages and dependency edges reached by DFS.
 type Graph struct {
-	Root  string
-	Nodes []string
-	Edges []Edge
+	Root     string
+	Nodes    []string
+	Edges    []Edge
+	Versions map[string]string // имя пакета -> версия (если известна)
+}
+
+// Label returns "name version" for a node, or just the name when
+// the version is unknown (for example, a virtual package like so:libc).
+func (g *Graph) Label(name string) string {
+	if version := g.Versions[name]; version != "" {
+		return name + " " + version
+	}
+	return name
 }
 
 // builder stores DFS state for one graph construction.
@@ -48,10 +58,15 @@ func Build(packages []apk.Package, root string, maxDepth int) (*Graph, error) {
 		nodes:    make(map[string]bool),
 		path:     make(map[string]bool),
 		expanded: make(map[string]int),
-		result:   &Graph{Root: root},
+		result:   &Graph{Root: root, Versions: make(map[string]string)},
 		maxDepth: maxDepth,
 	}
 	state.visit(root, 0)
+	for _, name := range state.result.Nodes {
+		if pkg := byName[name]; pkg != nil {
+			state.result.Versions[name] = pkg.Version
+		}
+	}
 	sort.Strings(state.result.Nodes)
 	sort.Slice(state.result.Edges, func(i, j int) bool {
 		if state.result.Edges[i].From == state.result.Edges[j].From {

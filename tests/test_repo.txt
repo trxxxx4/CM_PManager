@@ -1,4 +1,4 @@
-C:Q1Qm6Z0kXr4mP2nW8cVd1uT5yHs3a=
+C:Q1u8jzPde0IgxLd6GncfBAepfJBd0=
 P:curl
 V:8.5.0-r0
 A:x86_64
@@ -8,13 +8,10 @@ T:URL retrival utility and library
 U:https://curl.se/
 L:MIT
 o:curl
-m:Natanael Copa <ncopa@alpinelinux.org>
 t:1700000000
-c:3f2a9c1d
-D:ca-certificates so:libc.musl-x86_64.so.1 so:libcares.so.2 so:libcurl.so.4
-p:cmd:curl=8.5.0-r0
+D:ca-certificates libcurl>=8.5.0 zlib musl
 
-C:Q1Rk3Yd8Lm0pT6vB2nXw9aQ4eHs7c=
+C:Q1Kh8oOOL8dKLzdocJ2isAjIhKtJ0=
 P:curl
 V:8.4.0-r0
 A:x86_64
@@ -25,10 +22,22 @@ U:https://curl.se/
 L:MIT
 o:curl
 t:1690000000
-D:ca-certificates so:libc.musl-x86_64.so.1 so:libcurl.so.4
-p:cmd:curl=8.4.0-r0
+D:ca-certificates libcurl>=8.4.0 zlib musl
 
-C:Q1Zp9Hs2Kd5qW8mT1vXb4nLc7eA0g=
+C:Q1RlgLKOmxgJTeKdNnFRIBXuDL7Dx=
+P:libcurl
+V:8.5.0-r0
+A:x86_64
+S:280000
+I:540000
+T:The multiprotocol file transfer library
+U:https://curl.se/
+L:MIT
+o:libcurl
+t:1700000000
+D:libcrypto3 libssl3 c-ares nghttp2-libs zlib musl
+
+C:Q1tpYlSXpfKtHF4vUCsMehGAkWvj7=
 P:openssl
 V:3.1.4-r5
 A:x86_64
@@ -39,10 +48,96 @@ U:https://www.openssl.org/
 L:Apache-2.0
 o:openssl
 t:1700000000
-D:ca-certificates-bundle libcrypto3=3.1.4-r5 libssl3>=3.1.4-r5 so:libc.musl-x86_64.so.1
-p:cmd:openssl=3.1.4-r5
+D:ca-certificates-bundle libcrypto3=3.1.4-r5 libssl3>=3.1.4-r5 musl
 
-C:Q1Ab4Nc7Xd0mK3pW6vT9yLs2eHq5g=
+C:Q1FAc9QeWJKY40uvSwMFLZDe1f8rE=
+P:libssl3
+V:3.1.4-r5
+A:x86_64
+S:230000
+I:590000
+T:SSL shared libraries
+U:https://www.openssl.org/
+L:Apache-2.0
+o:libssl3
+t:1700000000
+D:libcrypto3
+
+C:Q1SQedUStPKR0CsTy4Qwb8DwkNhFd=
+P:libcrypto3
+V:3.1.4-r5
+A:x86_64
+S:1800000
+I:4200000
+T:Crypto library from openssl
+U:https://www.openssl.org/
+L:Apache-2.0
+o:libcrypto3
+t:1700000000
+D:musl
+
+C:Q1nXsiVpzz63FfkCzJr4i0B3JrTAw=
+P:c-ares
+V:1.24.0-r0
+A:x86_64
+S:50000
+I:120000
+T:Async resolver library
+U:https://c-ares.org/
+L:MIT
+o:c-ares
+t:1700000000
+
+C:Q1R4y9ojfljoQoaF1LlqsajAIxNKu=
+P:nghttp2-libs
+V:1.58.0-r0
+A:x86_64
+S:72000
+I:170000
+T:Experimental HTTP/2 client, server and library
+U:https://nghttp2.org/
+L:MIT
+o:nghttp2-libs
+t:1700000000
+
+C:Q18iS2G8NPRVdD53X83RZJzzzzgEO=
+P:zlib
+V:1.3.1-r0
+A:x86_64
+S:57000
+I:120000
+T:A compression/decompression Library
+U:https://zlib.net/
+L:Zlib
+o:zlib
+t:1700000000
+
+C:Q1zdmenCkhvMdgaKjIg8xNbe3nNyj=
+P:ca-certificates
+V:20230506-r0
+A:x86_64
+S:150000
+I:700000
+T:Common CA certificates PEM files
+U:https://www.mozilla.org/
+L:MPL-2.0 AND MIT
+o:ca-certificates
+t:1690000000
+D:ca-certificates-bundle
+
+C:Q1Oq9wMxEhh2FDEEtfjgVvVqE1SkH=
+P:ca-certificates-bundle
+V:20230506-r0
+A:x86_64
+S:125000
+I:220000
+T:Pre generated bundle of Certificate Authority certificates
+U:https://www.mozilla.org/
+L:MPL-2.0 AND MIT
+o:ca-certificates-bundle
+t:1690000000
+
+C:Q1bn88HxjSI6bWHtP3fS2qHx6kwXo=
 P:musl
 V:1.2.4_git20230717-r4
 A:x86_64
@@ -53,9 +148,8 @@ U:https://musl.libc.org/
 L:MIT
 o:musl
 t:1690000000
-p:so:libc.musl-x86_64.so.1=1
 
-C:Q1Cd8Pe1Zf4nM7qX0wU3zNt6gJr9i=
+C:Q1IIXGvOoNZYW2mZp0zVZomHFwUbb=
 P:demo-conflicts
 V:1.0-r0
 A:x86_64
@@ -66,3 +160,25 @@ o:demo-conflicts
 t:1700000000
 D:!demo-old libfoo>=1.0 libbar<2.0 pc:openssl~3.1 cmd:sh
 
+C:Q1YrEqmSM9wCZ7Uw9xfogoEmvnEN5=
+P:libfoo
+V:1.2-r0
+A:x86_64
+S:2048
+I:4096
+T:Demo library used by demo-conflicts
+L:MIT
+o:libfoo
+t:1700000000
+D:zlib
+
+C:Q1N1aE6PwZPf1Qh6yYTWmE4lBYOvf=
+P:libbar
+V:1.5-r0
+A:x86_64
+S:2048
+I:4096
+T:Demo library used by demo-conflicts
+L:MIT
+o:libbar
+t:1700000000

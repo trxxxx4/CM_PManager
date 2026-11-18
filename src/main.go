@@ -67,6 +67,7 @@ func execute(cfg *config.Config, reverse bool, stdout, stderr io.Writer) int {
 		fmt.Fprintf(stderr, "error: %v\n", err)
 		return exitDataError
 	}
+	result.Versions[result.Root] = pkg.Version
 	printGraph(stdout, result, reverse)
 	dotPath, imagePath := visualize.FileNames(result.Root, reverse)
 	if err := visualize.GenerateFiles(
